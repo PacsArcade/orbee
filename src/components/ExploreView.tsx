@@ -8,6 +8,7 @@ import {
 } from "../lib/stations";
 import { getStationScopeSeed } from "../lib/stationScope";
 import { getSigner } from "../lib/auth";
+import { STATIONS_RELAY_URL } from "../lib/nostr";
 import ScopeCanvas from "./ScopeCanvas";
 
 export interface FeaturedStation {
@@ -22,7 +23,20 @@ export interface FeaturedStation {
  *  Orbee's own group lives on stations.orbee.chat; Grimoire and Chachi
  *  stay on groups.0xchat.com because that's where their existing
  *  communities are. */
+/** A house floor (a fork's own deployment) can pin its own room first.
+ *  Set VITE_HOUSE_STATION_ID + VITE_STATIONS_RELAY (+ optional
+ *  VITE_HOUSE_STATION_NAME / _BLURB) at build time; unset = upstream list. */
+const HOUSE_ID = (import.meta.env.VITE_HOUSE_STATION_ID as string | undefined)?.trim();
+const HOUSE: FeaturedStation[] = HOUSE_ID
+  ? [{
+      ref: { id: HOUSE_ID, relay: STATIONS_RELAY_URL },
+      name: (import.meta.env.VITE_HOUSE_STATION_NAME as string | undefined)?.trim() || HOUSE_ID,
+      blurb: (import.meta.env.VITE_HOUSE_STATION_BLURB as string | undefined)?.trim() || "",
+    }]
+  : [];
+
 export const FEATURED: FeaturedStation[] = [
+  ...HOUSE,
   {
     ref: { id: "orbee", relay: "wss://stations.orbee.chat" },
     name: "Orbee",
