@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 // Side-effect imports for non-JS assets handled by vite. Without these
 // ambient declarations, `import "./index.css"` and friends fail tsc.
 

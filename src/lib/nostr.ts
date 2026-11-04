@@ -20,7 +20,8 @@ export type NostrFilter = {
  *  the seed for cross-device discovery. Featured stations on other relays
  *  (e.g. groups.0xchat.com for Grimoire/Chachi) still join via their own
  *  relay - this only seeds new entries. */
-export const STATIONS_RELAY_URL = "wss://stations.orbee.chat";
+export const STATIONS_RELAY_URL: string =
+  (import.meta.env.VITE_STATIONS_RELAY as string | undefined)?.trim() || "wss://stations.orbee.chat";
 
 let workerPort: MessagePort | null = null;
 
